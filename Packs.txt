@@ -8,18 +8,18 @@ Price : 50
 Luck : 1
 =================
 Better Pack
-Price : 200       Stock : 1
+Price : 200       Stock : 3
 Luck : 2
 =================
 Epic Pack
-Price : 500       Stock : 4
+Price : 500       Stock : 1
 Luck : 5
 =================
 Legendary Pack
-Price : 500       Stock : 2
+Price : 500       Stock : 3
 Luck : 10
 =================
 God Pack
-Price : 10000       Stock : 3
+Price : 10000       Stock : 2
 Luck : 100
 =================
