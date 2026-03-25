@@ -51,7 +51,7 @@ def main():
     AvailablePacks = [StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack]
     with open("Packs.txt", "a") as f:
         for packs in AvailablePacks:
-            f.write(f"{packs.name}\nPrice : {packs.price}       Stock : {random.randint(0,5)}\nLuck : {packs.luck}\n=================\n")
+            f.write(f"{packs.name}\nPrice : {packs.price}\nLuck : {packs.luck}x\n=================\n")
     with open("Packs.txt", "r") as f:
         lines = f.readlines()
 

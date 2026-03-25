@@ -5,21 +5,21 @@
 =================
 Starter Pack
 Price : 50
-Luck : 1
+Luck : 1x
 =================
 Better Pack
-Price : 200       Stock : 3
-Luck : 2
+Price : 200
+Luck : 2x
 =================
 Epic Pack
-Price : 500       Stock : 5
-Luck : 5
+Price : 500
+Luck : 5x
 =================
 Legendary Pack
-Price : 500       Stock : 3
-Luck : 10
+Price : 500
+Luck : 10x
 =================
 God Pack
-Price : 10000       Stock : 1
-Luck : 100
+Price : 10000
+Luck : 100x
 =================
