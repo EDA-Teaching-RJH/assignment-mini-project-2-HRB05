@@ -12,9 +12,9 @@ class Packs:
     
     def openPack(self):
         mutations = ["Common","Gold","Diamond","Unreal","God"]
-        baseChance = [68.99,25,5,1,0.01] # Realised i would need this to calculate the rarity
+        baseChance = [68.99,25,5,1,0.05] # Realised i would need this to calculate the rarity
 
-        weights = [(baseChance[0]/self.luck),25,5,1,0.01] # Weights to get each mutation with a pack luck of 1
+        weights = [(baseChance[0]/self.luck),baseChance[1]/(self.luck*1.5),baseChance[2]*(self.luck/1.5),baseChance[3]*self.luck,baseChance[4]*(self.luck*1.5)] # Weights to get each mutation with a pack luck of 1
         # Weights now private so it doesnt change outside the class
     
         result = random.choices(mutations, weights=weights, k=1)[0]
@@ -62,17 +62,15 @@ def main():
     return StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack
 
 StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack = main()
-result, idx, baseChance, mutations = StarterPack.openPack()
+result, idx, baseChance, mutations = GodPack.openPack()
 
 def CreateCard():
     cards = []
     con = random.randint(1,100)
-    rarityDenom = round((100/baseChance[idx])*(con/100),1)
-    val = rarityDenom*100
-    inc = rarityDenom
-    if (rarityDenom) <= 1:
-        rarityDenom = 1
-    rarityString = f"1/{rarityDenom}"
+    rarityDenom = round((100/baseChance[idx])*(con/50),1)
+    val = rarityDenom*25
+    inc = rarityDenom*5
+    rarityString = f"1 in {int(rarityDenom*10)}"
     if result == "Common":
             newCard = Card(
                 value = val,
