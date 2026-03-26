@@ -1,12 +1,12 @@
 import random
 import os
 import time
+import re
 
 # Card collection game
 
 #1) Make a class for the different packs : Price | Luck %
 
-global money
 money = 100
 
 class Packs:
@@ -74,6 +74,7 @@ def main():
 StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack,AvailablePacks = main()
 
 def sellCard():
+    global money
     noCard = False
     if os.path.exists("Card.txt"):
         os.remove("Card.txt")
@@ -83,10 +84,17 @@ def sellCard():
         noCard = True
     return noCard
 
+def earning():
+    with open("Card.txt", "r") as f:
+        lines = f.readlines()
+        incomeCard = re.findall(r'-?\d*\.?\d+', lines[4])
+        print(incomeCard)
+
 def Menu():
+    global money
     while True:
         with open("Menu.txt", "w") as f:
-            f.write(f"\n\n===== MENU =====\n1 : Open Pack\n2 : Sell Card\n================\nMoney : {money}\n================\n")
+            f.write(f"\n\n===== MENU =====\n1 : Open Pack\n2 : Sell Card\n3 : Earn Money\n================\nMoney : {money}\n================\n")
 
         passed = False
 
@@ -98,9 +106,9 @@ def Menu():
                 with open("Menu.txt", "r") as f:
                     menuLines = f.readlines()
 
-                menuLines[8] = ""
+                menuLines[9] = ""
                 if notnum:
-                    menuLines[9] = ""
+                    menuLines[10] = ""
                     notnum = False
 
                 with open("Menu.txt", "w") as f:
@@ -118,8 +126,13 @@ def Menu():
                     try:
                         packChoice = int(input("What pack do you want to open >> "))
                         if packChoice >= 1 and packChoice <= 5:
-                            openedPack = True
-                            break 
+                            if money - AvailablePacks[packChoice-1].price > 0:
+                                money = money - AvailablePacks[packChoice-1].price
+                                openedPack = True
+                                break
+                            else:
+                                money = money
+                                print("Not enough money. Check how much you have in the menu!") 
                         else:
                             print("1 / 2 / 3 / 4 / 5")
                     except:
@@ -127,7 +140,7 @@ def Menu():
                         continue
                 with open("Menu.txt", "a") as f:
                     f.writelines(f"Opened a {AvailablePacks[packChoice-1].name}")
-                time.sleep(2)
+                time.sleep(3)
                 break
             elif choice == "2":
                 openedPack = False
@@ -135,8 +148,12 @@ def Menu():
                 if not noCard:
                     with open("Menu.txt", "a") as f:
                         f.writelines("Card Sold")
-                    time.sleep(2)
+                    time.sleep(3)
                     break
+            elif choice == "3":
+                openedPack = False
+                earning()
+                break
             else:
                 with open("Menu.txt", "a") as f:
                     f.writelines("1 or 2")
@@ -176,6 +193,7 @@ def CreateCard():
         f.write(f"Rarity | {newCard.rarity}\nCondition | {newCard.condition}\nValue | {newCard.value}\nIncome | {newCard.income}\n")
         if mut == True:
             f.write(f"Mutation | {newCard.mutation}")
+    return newCard
 
 CreateCard()
 while True:

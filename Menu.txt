@@ -3,6 +3,7 @@
 ===== MENU =====
 1 : Open Pack
 2 : Sell Card
+3 : Earn Money
 ================
-Money : 100
+Money : 50
 ================
