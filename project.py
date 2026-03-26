@@ -124,7 +124,6 @@ def Menu():
                     except:
                         print("Enter a number")
                         continue
-                CreateCard()
                 with open("Menu.txt", "a") as f:
                     f.writelines(f"Opened a {AvailablePacks[packChoice-1].name}")
                 time.sleep(2)
@@ -141,14 +140,13 @@ def Menu():
                 with open("Menu.txt", "a") as f:
                     f.writelines("1 or 2")
         if openedPack:
-            return packChoice
+            return packChoice, openedPack
     
-packChoice = Menu()
+packChoice, openedPack = Menu()
 
 result, idx, baseChance, mutations = AvailablePacks[packChoice-1].openPack()
 
 def CreateCard():
-    cards = []
     con = random.randint(1,100)
     rarityDenom = round((100/baseChance[idx])*(con/50),1)
     val = rarityDenom*25
@@ -178,7 +176,9 @@ def CreateCard():
         if mut == True:
             f.write(f"Mutation | {newCard.mutation}")
 
-    cards.append(newCard)
-
+CreateCard()
 while True:
-    Menu()
+    packChoice, openedPack = Menu()
+    result, idx, baseChance, mutations = AvailablePacks[packChoice-1].openPack()
+    if openedPack:
+        CreateCard()
