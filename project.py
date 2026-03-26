@@ -73,47 +73,14 @@ def main():
 
 StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack,AvailablePacks = main()
 
-result, idx, baseChance, mutations = StarterPack.openPack()
-
-def CreateCard():
-    cards = []
-    con = random.randint(1,100)
-    rarityDenom = round((100/baseChance[idx])*(con/50),1)
-    val = rarityDenom*25
-    inc = rarityDenom*5
-    rarityString = f"1 in {int(rarityDenom*10)}"
-    if result == "Common":
-            newCard = Card(
-                value = round(val,0),
-                income = inc,
-                rarity = rarityString,
-                condition = con
-            )
-            mut = False
-    else:
-        newCard = Mutation(
-            value = round(val,0),
-            income = rarityDenom,
-            rarity = rarityString,
-            condition = con,
-            mutation = mutations[idx]
-        )
-        mut = True
-
-    with open("Card.txt", "w") as f:
-        f.writelines("==== MY CARD ====\n")
-        f.write(f"Rarity | {newCard.rarity}\nCondition | {newCard.condition}\nValue | {newCard.value}\nIncome | {newCard.income}\n")
-        if mut == True:
-            f.write(f"Mutation | {newCard.mutation}")
-
-    cards.append(newCard)
-
 def sellCard():
     if os.path.exists("Card.txt"):
         os.remove("Card.txt")
     else:
-        with open("Menu.text", "a") as f:
+        with open("Menu.txt", "a") as f:
             f.writelines("No card to sell")
+        noCard = True
+    return noCard
 
 def Menu():
     while True:
@@ -150,8 +117,8 @@ def Menu():
                     try:
                         packChoice = int(input("What pack do you want to open >> "))
                         if packChoice >= 1 and packChoice <= 5:
-                            break
-                            
+                            openedPack = True
+                            break 
                         else:
                             print("1 / 2 / 3 / 4 / 5")
                     except:
@@ -163,11 +130,55 @@ def Menu():
                 time.sleep(2)
                 break
             elif choice == "2":
-                sellCard()
-                with open("Menu.txt", "a") as f:
-                    f.writelines("Card Sold")
-                time.sleep(2)
-                break
+                openedPack = False
+                noCard = sellCard()
+                if not noCard:
+                    with open("Menu.txt", "a") as f:
+                        f.writelines("Card Sold")
+                    time.sleep(2)
+                    break
             else:
                 with open("Menu.txt", "a") as f:
                     f.writelines("1 or 2")
+        if openedPack:
+            return packChoice
+    
+packChoice = Menu()
+
+result, idx, baseChance, mutations = AvailablePacks[packChoice-1].openPack()
+
+def CreateCard():
+    cards = []
+    con = random.randint(1,100)
+    rarityDenom = round((100/baseChance[idx])*(con/50),1)
+    val = rarityDenom*25
+    inc = rarityDenom*5
+    rarityString = f"1 in {int(rarityDenom*10)}"
+    if result == "Common":
+            newCard = Card(
+                value = round(val,0),
+                income = inc,
+                rarity = rarityString,
+                condition = con
+            )
+            mut = False
+    else:
+        newCard = Mutation(
+            value = round(val,0),
+            income = rarityDenom,
+            rarity = rarityString,
+            condition = con,
+            mutation = mutations[idx]
+        )
+        mut = True
+
+    with open("Card.txt", "w") as f:
+        f.writelines("==== MY CARD ====\n")
+        f.write(f"Rarity | {newCard.rarity}\nCondition | {newCard.condition}\nValue | {newCard.value}\nIncome | {newCard.income}\n")
+        if mut == True:
+            f.write(f"Mutation | {newCard.mutation}")
+
+    cards.append(newCard)
+
+while True:
+    Menu()
