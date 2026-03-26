@@ -151,6 +151,7 @@ def Menu():
                         packChoice = int(input("What pack do you want to open >> "))
                         if packChoice >= 1 and packChoice <= 5:
                             break
+                            
                         else:
                             print("1 / 2 / 3 / 4 / 5")
                     except:
@@ -170,7 +171,3 @@ def Menu():
             else:
                 with open("Menu.txt", "a") as f:
                     f.writelines("1 or 2")
-
-
-Menu()
-
