@@ -5,5 +5,5 @@
 2 : Sell Card
 3 : Earn Money
 ================
-Money : 50
+Money : 100
 ================

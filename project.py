@@ -84,101 +84,86 @@ def sellCard():
         noCard = True
     return noCard
 
-def updateMoney():
-    with open("Menu.txt", "r") as f:
-        lines = f.readlines()
-
-    lines[7] = f"Money : {money}"
-
-    with open("Menu.txt", "w") as f:
-        f.writelines(lines)
-
 def earning():
     global money
     with open("Card.txt", "r") as f:
         lines = f.readlines()
         incomeCard = re.findall(r'-?\d*\.?\d+', lines[4])
-    earn = True
-    while earn:
-        updateMoney()
+    for i in range(30):
         money += float(incomeCard[0])
         time.sleep(1)
-        with open("Menu.txt", "r") as f:
-            newlines = f.readlines()
-        if "STOP" in newlines:
-            earn = False
-        else:
-            earn = True
+        print(money)
+        i += 1
 
 def Menu():
     global money
     while True:
         with open("Menu.txt", "w") as f:
-            f.write(f"\n\n===== MENU =====\n1 : Open Pack\n2 : Sell Card\n3 : Earn Money\n================\nMoney : {money}\n================\n")
+            f.write(f"\n\n===== MENU =====\n1 : Open Pack\n2 : Sell Card\n3 : Earn Money\n================\n================\n")
 
         passed = False
 
         notnum = False
+        
+        choice = input("What option do you want to select >> ")
+        if passed:
+            with open("Menu.txt", "r") as f:
+                menuLines = f.readlines()
 
-        while True:
-            choice = input("What option do you want to select >> ")
-            if passed:
-                with open("Menu.txt", "r") as f:
-                    menuLines = f.readlines()
+            menuLines[7] = ""
+            if notnum:
+                menuLines[8] = ""
+                notnum = False
 
-                menuLines[9] = ""
-                if notnum:
-                    menuLines[10] = ""
-                    notnum = False
-
-                with open("Menu.txt", "w") as f:
-                    f.writelines(menuLines)
-            passed = True
-            try:
-                int(choice)
-            except:
-                with open("Menu.txt", "a") as f:
-                    f.writelines("Enter a number\n")
-                    notnum = True
-            if choice == "1":
-                main()
-                while True:
-                    try:
-                        packChoice = int(input("What pack do you want to open >> "))
-                        if packChoice >= 1 and packChoice <= 5:
-                            if money - AvailablePacks[packChoice-1].price > 0:
-                                money = money - AvailablePacks[packChoice-1].price
-                                openedPack = True
-                                break
-                            else:
-                                money = money
-                                print("Not enough money. Check how much you have in the menu!") 
+            with open("Menu.txt", "w") as f:
+                f.writelines(menuLines)
+        passed = True
+        try:
+            int(choice)
+        except:
+            with open("Menu.txt", "a") as f:
+                f.writelines("Enter a number\n")
+                notnum = True
+        if choice == "1":
+            main()
+            while True:
+                try:
+                    packChoice = int(input("What pack do you want to open >> "))
+                    if packChoice >= 1 and packChoice <= 5:
+                        if money - AvailablePacks[packChoice-1].price > 0:
+                            money = money - AvailablePacks[packChoice-1].price
+                            print(f"You now have {money} money")
+                            openedPack = True
+                            break
                         else:
-                            print("1 / 2 / 3 / 4 / 5")
-                    except:
-                        print("Enter a number")
-                        continue
+                            money = money
+                            print(f"Not enough money. You have {money} money") 
+                    else:
+                        print("1 / 2 / 3 / 4 / 5")
+                except:
+                    print("Enter a number")
+                    continue
+            with open("Menu.txt", "a") as f:
+                f.writelines(f"Opened a {AvailablePacks[packChoice-1].name}")
+            time.sleep(3)
+            break
+        elif choice == "2":
+            openedPack = False
+            noCard = sellCard()
+            if not noCard:
                 with open("Menu.txt", "a") as f:
-                    f.writelines(f"Opened a {AvailablePacks[packChoice-1].name}")
+                    f.writelines("Card Sold")
                 time.sleep(3)
                 break
-            elif choice == "2":
-                openedPack = False
-                noCard = sellCard()
-                if not noCard:
-                    with open("Menu.txt", "a") as f:
-                        f.writelines("Card Sold")
-                    time.sleep(3)
-                    break
-            elif choice == "3":
-                openedPack = False
-                earning()
-                break
-            else:
-                with open("Menu.txt", "a") as f:
-                    f.writelines("1 or 2")
-        if openedPack:
-            return packChoice, openedPack
+        elif choice == "3":
+            openedPack = False
+            earning()
+            break
+        else:
+            with open("Menu.txt", "a") as f:
+                f.writelines("1 or 2")
+    if openedPack:
+        return packChoice, openedPack
     
 packChoice, openedPack = Menu()
 
