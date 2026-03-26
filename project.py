@@ -84,11 +84,31 @@ def sellCard():
         noCard = True
     return noCard
 
+def updateMoney():
+    with open("Menu.txt", "r") as f:
+        lines = f.readlines()
+
+    lines[7] = f"Money : {money}"
+
+    with open("Menu.txt", "w") as f:
+        f.writelines(lines)
+
 def earning():
+    global money
     with open("Card.txt", "r") as f:
         lines = f.readlines()
         incomeCard = re.findall(r'-?\d*\.?\d+', lines[4])
-        print(incomeCard)
+    earn = True
+    while earn:
+        updateMoney()
+        money += float(incomeCard[0])
+        time.sleep(1)
+        with open("Menu.txt", "r") as f:
+            newlines = f.readlines()
+        if "STOP" in newlines:
+            earn = False
+        else:
+            earn = True
 
 def Menu():
     global money

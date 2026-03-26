@@ -1,5 +1,0 @@
-==== MY CARD ====
-Rarity | 1 in 4
-Condition | 14
-Value | 10.0
-Income | 2.0
