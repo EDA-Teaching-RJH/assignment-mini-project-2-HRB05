@@ -1,6 +1,0 @@
-==== MY CARD ====
-Rarity | 1 in 16400
-Condition | 41
-Value | 41000.0
-Income | 1640.0
-Mutation | God

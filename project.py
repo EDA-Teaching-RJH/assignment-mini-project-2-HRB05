@@ -74,6 +74,7 @@ def main():
 StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack,AvailablePacks = main()
 
 def sellCard():
+    noCard = False
     if os.path.exists("Card.txt"):
         os.remove("Card.txt")
     else:
