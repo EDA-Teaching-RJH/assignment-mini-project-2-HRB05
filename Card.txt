@@ -1,0 +1,5 @@
+==== MY CARD ====
+Rarity | 1 in 17
+Condition | 59
+Value | 42.0
+Income | 8.5

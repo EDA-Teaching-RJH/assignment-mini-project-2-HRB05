@@ -47,7 +47,7 @@ class Mutation(Card):
 def main():
     # Code for packs
     with open("Packs.txt", "w") as f:
-        f.write("\n\n===== PACKS =====\n\n=================\n")
+        f.write("\n\n====== PACKS ======\n\n===================\n")
     StarterPack = Packs("Starter Pack",50,1)
     BetterPack = Packs("Better Pack",200,2)
     EpicPack = Packs("Epic Pack",500,5)
@@ -55,20 +55,24 @@ def main():
     GodPack = Packs("God Pack",10000,100)
     AvailablePacks = [StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack]
 
+    indexNum = 1
+
     with open("Packs.txt", "a") as f:
         for packs in AvailablePacks:
-            f.write(f"{packs.name}\nPrice : {packs.price}\nLuck : {packs.luck}x\n=================\n")
+            f.write(f"   | {packs.name}\n {indexNum} | Price : {packs.price}\n   | Luck : {packs.luck}x\n===================\n")
+            indexNum += 1
 
     with open("Packs.txt", "r") as f:
         lines = f.readlines()
 
-    lines[6] = "Price : 50\n"
+    lines[6] = " 1 | Price : 50\n"
     with open("Packs.txt", "w") as f:
         f.writelines(lines)
 
-    return StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack
+    return StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack,AvailablePacks
 
-StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack = main()
+StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack,AvailablePacks = main()
+
 result, idx, baseChance, mutations = StarterPack.openPack()
 
 def CreateCard():
@@ -142,16 +146,26 @@ def Menu():
                     notnum = True
             if choice == "1":
                 main()
+                while True:
+                    try:
+                        packChoice = int(input("What pack do you want to open >> "))
+                        if packChoice >= 1 and packChoice <= 5:
+                            break
+                        else:
+                            print("1 / 2 / 3 / 4 / 5")
+                    except:
+                        print("Enter a number")
+                        continue
                 CreateCard()
                 with open("Menu.txt", "a") as f:
-                    f.writelines("Opened a pack")
-                time.sleep(1)
+                    f.writelines(f"Opened a {AvailablePacks[packChoice-1].name}")
+                time.sleep(2)
                 break
             elif choice == "2":
                 sellCard()
                 with open("Menu.txt", "a") as f:
                     f.writelines("Card Sold")
-                time.sleep(1)
+                time.sleep(2)
                 break
             else:
                 with open("Menu.txt", "a") as f:
