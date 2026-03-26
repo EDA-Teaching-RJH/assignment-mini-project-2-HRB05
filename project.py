@@ -1,8 +1,13 @@
 import random
+import os
+import time
 
 # Card collection game
 
 #1) Make a class for the different packs : Price | Luck %
+
+global money
+money = 100
 
 class Packs:
     def __init__(self,name,price,luck):
@@ -42,16 +47,18 @@ class Mutation(Card):
 def main():
     # Code for packs
     with open("Packs.txt", "w") as f:
-        f.write("\n\n=== PACK MENU ===\n\n=================\n")
+        f.write("\n\n===== PACKS =====\n\n=================\n")
     StarterPack = Packs("Starter Pack",50,1)
     BetterPack = Packs("Better Pack",200,2)
     EpicPack = Packs("Epic Pack",500,5)
     LegendaryPack = Packs("Legendary Pack",500,10)
     GodPack = Packs("God Pack",10000,100)
     AvailablePacks = [StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack]
+
     with open("Packs.txt", "a") as f:
         for packs in AvailablePacks:
             f.write(f"{packs.name}\nPrice : {packs.price}\nLuck : {packs.luck}x\n=================\n")
+
     with open("Packs.txt", "r") as f:
         lines = f.readlines()
 
@@ -62,7 +69,7 @@ def main():
     return StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack
 
 StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack = main()
-result, idx, baseChance, mutations = GodPack.openPack()
+result, idx, baseChance, mutations = StarterPack.openPack()
 
 def CreateCard():
     cards = []
@@ -73,7 +80,7 @@ def CreateCard():
     rarityString = f"1 in {int(rarityDenom*10)}"
     if result == "Common":
             newCard = Card(
-                value = val,
+                value = round(val,0),
                 income = inc,
                 rarity = rarityString,
                 condition = con
@@ -81,7 +88,7 @@ def CreateCard():
             mut = False
     else:
         newCard = Mutation(
-            value = val,
+            value = round(val,0),
             income = rarityDenom,
             rarity = rarityString,
             condition = con,
@@ -89,10 +96,67 @@ def CreateCard():
         )
         mut = True
 
-    print(f"Rarity | {newCard.rarity}\nCondition | {newCard.condition}\nValue | {newCard.value}\nIncome | {newCard.income}")
-    if mut == True:
-        print(f"Mutation | {newCard.mutation}")
+    with open("Card.txt", "w") as f:
+        f.writelines("==== MY CARD ====\n")
+        f.write(f"Rarity | {newCard.rarity}\nCondition | {newCard.condition}\nValue | {newCard.value}\nIncome | {newCard.income}\n")
+        if mut == True:
+            f.write(f"Mutation | {newCard.mutation}")
 
     cards.append(newCard)
 
-CreateCard()
+def sellCard():
+    if os.path.exists("Card.txt"):
+        os.remove("Card.txt")
+    else:
+        with open("Menu.text", "a") as f:
+            f.writelines("No card to sell")
+
+def Menu():
+    while True:
+        with open("Menu.txt", "w") as f:
+            f.write(f"\n\n===== MENU =====\n1 : Open Pack\n2 : Sell Card\n================\nMoney : {money}\n================\n")
+
+        passed = False
+
+        notnum = False
+
+        while True:
+            choice = input("What option do you want to select >> ")
+            if passed:
+                with open("Menu.txt", "r") as f:
+                    menuLines = f.readlines()
+
+                menuLines[8] = ""
+                if notnum:
+                    menuLines[9] = ""
+                    notnum = False
+
+                with open("Menu.txt", "w") as f:
+                    f.writelines(menuLines)
+            passed = True
+            try:
+                int(choice)
+            except:
+                with open("Menu.txt", "a") as f:
+                    f.writelines("Enter a number\n")
+                    notnum = True
+            if choice == "1":
+                main()
+                CreateCard()
+                with open("Menu.txt", "a") as f:
+                    f.writelines("Opened a pack")
+                time.sleep(1)
+                break
+            elif choice == "2":
+                sellCard()
+                with open("Menu.txt", "a") as f:
+                    f.writelines("Card Sold")
+                time.sleep(1)
+                break
+            else:
+                with open("Menu.txt", "a") as f:
+                    f.writelines("1 or 2")
+
+
+Menu()
+
