@@ -54,7 +54,7 @@ def main():
     StarterPack = Packs("Starter Pack",50,1)
     BetterPack = Packs("Better Pack",200,2)
     EpicPack = Packs("Epic Pack",500,5)
-    LegendaryPack = Packs("Legendary Pack",500,10)
+    LegendaryPack = Packs("Legendary Pack",2500,10)
     GodPack = Packs("God Pack",10000,100)
     AvailablePacks = [StarterPack,BetterPack,EpicPack,LegendaryPack,GodPack]
 
@@ -84,7 +84,7 @@ def sellCard():
             lines = f.readlines()
             valueCard = re.findall(r'-?\d*\.?\d+', lines[3])
             money += float(valueCard[0])
-            print(f"You now have {money} money")
+            print(f"You now have {round(money,1)} money")
         os.remove("Card.txt")
     else:
         with open("Menu.txt", "a") as f:
@@ -101,12 +101,12 @@ def earning():
     for i in range(ans):
         money += float(incomeCard[0])
         time.sleep(1)
-        print(money)
+        print(round(money,1))
         i += 1
 
 def Menu():
     global money
-    print(f"Money : {money}")
+    print(f"Money : {round(money,1)}")
     while True:
         with open("Menu.txt", "w") as f:
             f.write(f"\n\n===== MENU =====\n1 : Open Pack\n2 : Sell Card\n3 : Earn Money\n================\n")
@@ -142,12 +142,12 @@ def Menu():
                     if packChoice >= 1 and packChoice <= 5:
                         if money - AvailablePacks[packChoice-1].price >= 0:
                             money = money - AvailablePacks[packChoice-1].price
-                            print(f"You now have {money} money")
+                            print(f"You now have {round(money,1)} money")
                             openedPack = True
                             break
                         else:
                             money = money
-                            print(f"Not enough money. You have {money} money") 
+                            print(f"Not enough money. You have {round(money,1)} money") 
                     else:
                         print("1 / 2 / 3 / 4 / 5")
                 except:
