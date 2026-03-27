@@ -172,6 +172,7 @@ def Menu():
                 earning()
             except:
                 print("No card to earn from")
+                continue
             break
         else:
             with open("Menu.txt", "a") as f:

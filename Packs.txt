@@ -16,7 +16,7 @@
    | Luck : 5x
 ===================
    | Legendary Pack
- 4 | Price : 500
+ 4 | Price : 2500
    | Luck : 10x
 ===================
    | God Pack

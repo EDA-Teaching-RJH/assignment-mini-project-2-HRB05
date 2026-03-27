@@ -1,6 +1,5 @@
 ==== MY CARD ====
-Rarity | 1 in 60
-Condition | 15
-Value | 150.0
-Income | 6.0
-Mutation | Diamond
+Rarity | 1 in 2
+Condition | 7
+Value | 5.0
+Income | 1.0
